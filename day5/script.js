@@ -18,6 +18,7 @@ uurcxstgmygtbstg is naughty because it has a pair (tg) but no repeat with a sing
 ieodomkazucvgmuy is naughty because it has a repeating letter with one between (odo), but no pair that appears twice.
 How many strings are nice under these new rules?
 
+
 */
 
 
