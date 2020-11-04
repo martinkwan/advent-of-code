@@ -1,7 +1,5 @@
 const fs = require('fs');
-
-let totalHousesWithPresents = 1;
-var data = fs.readFileSync('input4.txt', 'utf8').split('\n');
+const data = fs.readFileSync('input.txt').split('\n');
 
 
 /*
@@ -23,41 +21,41 @@ How many strings are nice under these new rules?
 */
 
 
-const niceStrings = data.reduce((acc, currString, idx, src) => {
-	const dict = {};
+const numberOfNiceStrings = data.reduce((acc, currString, idx, src) => {
+	const letterPairsToIndexDict = {};
 
 	let repeatsWithOneLetterBetween = 0;
-	let containsAPairOfAnyLettersTwice = false;
+	let containsAPairOfAnyLettersTwiceAtLeastOneSpotAway = false;
 
 	for (let i = 0; i < currString.length - 1; i++) {
 		let currLetter = currString[i];
 		let nextLetter = currString[i + 1];
 		let nextNextLetter = currString[i + 2];
+		const letterPairs = currLetter + nextLetter;
 
 		if (currLetter === nextNextLetter) {
 			repeatsWithOneLetterBetween++;
 		}
 
-		const pairOfLetters = currLetter + nextLetter;
 
-		if (dict[pairOfLetters]) {
-			//check if index is far enough, if it is, increment count
-			containsAPairOfAnyLettersTwice = dict[pairOfLetters].some(element => i - element > 1);
-			if (!containsAPairOfAnyLettersTwice) {
-				dict[pairOfLetters].push(i);
+		if (letterPairsToIndexDict[letterPairs]) {
+			// check if index is at least one spot away
+			containsAPairOfAnyLettersTwiceAtLeastOneSpotAway = letterPairsToIndexDict[letterPairs].some(index => i - index > 1);
+
+			if (!containsAPairOfAnyLettersTwiceAtLeastOneSpotAway) {
+				letterPairsToIndexDict[letterPairs].push(i);
 			}
-		} else if (!dict[pairOfLetters]) {
-			dict[pairOfLetters] = [i];
+		} else if (!letterPairsToIndexDict[letterPairs]) {
+			letterPairsToIndexDict[letterPairs] = [i];
 		}
 
-		if (repeatsWithOneLetterBetween && containsAPairOfAnyLettersTwice) {
+		if (repeatsWithOneLetterBetween && containsAPairOfAnyLettersTwiceAtLeastOneSpotAway) {
 			return ++acc;
 		}
-		
 	}
 
 	return acc;
 
 }, 0);
 
-console.log(niceStrings, 'niceStrings')
+console.log(numberOfNiceStrings, 'numberOfNiceStrings')
