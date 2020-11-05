@@ -24,12 +24,13 @@ After following the instructions, how many lights are lit?
 */
 
 const grid = [];
+// Create Grid
 for (let i = 0; i <= 999; i++) {
 	grid[i] = [];
 }
 
 const instructionsArray = data.split('\n').map(instruction => instruction.split(' '));
-let count = 0;
+let lightsCount = 0;
 
 function iterateThroughGrid(instruction, from, to) {
 	const [fromX, fromY] = from.split(',').map(numString => Number(numString)); 
@@ -39,69 +40,36 @@ function iterateThroughGrid(instruction, from, to) {
 		for (let j = fromY; j <= toY; j++) {
 			if(instruction === 'on') {
 				if (!grid[i][j]) {
-					count++;
+					lightsCount++;
 				}
 				grid[i][j] = true;
 			} else if (instruction === 'off') {
 				if (grid[i][j]) {
-					count--;
+					lightsCount--;
 				}
 				grid[i][j] = false;
 			} else if (instruction === 'toggle') {
 				grid[i][j] = !grid[i][j];
-				grid[i][j] ? count++ : count--;
+				grid[i][j] ? lightsCount++ : lightsCount--;
 			}
 		}
 	}
 }
 
-// iterateThroughGrid('on', '641,832', '947,850');
-// iterateThroughGrid('toggle', '648,832', '947,850');
-// iterateThroughGrid('toggle', '648,832', '947,850');
-// iterateThroughGrid('toggle', '648,832', '947,850');
-// iterateThroughGrid('on', '0,0', '2,2');
-
-/*
-  [ 'toggle', '641,832', 'through', '947,850' ],
-  [ 'turn', 'on', '268,448', 'through', '743,777' ],
-*/
-
-
-// console.log(instructionsArray, 'instructionsArray');
-
 instructionsArray.forEach(instruction => {
-	console.log(instruction, 'instruction')
 	if (instruction[0] === 'turn') {
 		if (instruction[1] === 'on') {
-			//run iteration function with param on
 			iterateThroughGrid(instruction[1], instruction[2], instruction[4])
 		} else if (instruction[1] === 'off') {
-			//run iteration function with param off
 			iterateThroughGrid(instruction[1], instruction[2], instruction[4])
 		}
 	} else if (instruction[0] === 'toggle') {
-		//run iteration function with param toggle
 			iterateThroughGrid(instruction[0], instruction[1], instruction[3])
 	}
 });
 
-console.log(count, 'count')
-
-
-// build a dictionary is more faster.
-// if its turn ON, set to true for numbers in range
-// if its toggle, check if its true or false then switch it
-// if its turn off, set to false for numbers in range
-// everytime turn on or turn off, increment or decrement counter
-
-
-// need to keep track of lights are toggled on or off. - HOW? -oh easy... change each number to true or false. keep track of index only
-
-// iterate through instructions.
-// then iterate through grid to turn on or off.
-
-// then at end, iterate through grid to count all lights that are true OR (faster) keep a counter as I turn on or off.
-
+//Answer
+console.log(lightsCount, 'lights are lit');
 
 
 
